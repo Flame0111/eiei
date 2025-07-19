@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Mali', cursive; /* ใช้ฟอนต์ Mali ที่ดูน่ารักขึ้น */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right top, #ffc0cb, #add8e6); /* โทนสีชมพูฟ้าพาสเทล */
+            color: #555;
+            overflow: hidden; /* ซ่อนส่วนเกิน */
+            position: relative;
+        }
+
+        /* เพิ่มองค์ประกอบตกแต่งน่ารักๆ */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        body::before {
+            width: 200px;
+            height: 200px;
+            top: -50px;
+            left: -50px;
+        }
+
+        body::after {
+            width: 150px;
+            height: 150px;
+            bottom: -30px;
+            right: -30px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 25px; /* โค้งมนมากขึ้น */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 550px;
+            color: #333;
+            animation: popIn 0.8s ease-out forwards; /* แอนิเมชันน่ารักๆ */
+            position: relative; /* เพื่อให้องค์ประกอบตกแต่งอยู่ด้านใน */
+            z-index: 1;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1, h2 {
+            font-family: 'Kanit', sans-serif; /* หัวข้อยังใช้ Kanit เพื่อความชัดเจน */
+            color: #ff69b4; /* ชมพูสดใส */
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #666;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px); /* ปรับ padding */
+            padding: 12px;
+            border: 2px solid #ffb6c1; /* ขอบสีชมพูอ่อน */
+            border-radius: 12px; /* โค้งมน */
+            font-size: 1.2em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            font-family: 'Mali', cursive;
+            color: #444;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff69b4; /* ชมพูสดใสเมื่อโฟกัส */
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+            outline: none;
+        }
+
+        button {
+            background-color: #87ceeb; /* ฟ้าอ่อนน่ารัก */
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 20px; /* โค้งมนเป็นพิเศษ */
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin: 0 10px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #6495ed; /* ฟ้าเข้มขึ้นเมื่อ hover */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #greeting-page {
+            display: none; /* ซ่อนหน้านี้ไว้ก่อน */
+            line-height: 1.6; /* ระยะห่างบรรทัด */
+            font-size: 1.15em;
+            color: #444;
+        }
+
+        #greeting-message strong {
+            color: #ff69b4; /* เน้นชื่อด้วยสีชมพู */
+        }
+
+        .button-group {
+            margin-top: 35px;
+        }
+
+        /* Modal (Popup) Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px); /* เพิ่มเบลอพื้นหลัง */
+        }
+
+        .modal-content {
+            background-color: #fff0f5; /* ชมพูอ่อนมาก */
+            margin: auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            color: #555;
+            animation: popIn 0.3s ease-out forwards;
+        }
+
+        .close-button {
+            color: #aaa;
+            font-size: 32px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #ff69b4; /* เปลี่ยนสีเมื่อ hover */
+            text-decoration: none;
+        }
+
+        #modal-text {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="name-input-page">
+        <h1>สวัสดี!!!</h1>
+        <div class="input-group">
+            <label for="nickname">ชื่อเล่นของคุณคือ?</label>
+            <input type="text" id="nickname" placeholder="ป้อนชื่อเล่นของคุณ">
+        </div>
+        <button onclick="showGreeting()">Next</button>
+    </div>
+
+    <div class="container" id="greeting-page">
+        <h2 id="greeting-message"></h2>
+        <div class="button-group">
+            <button onclick="respondYes()">Yes</button>
+            <button onclick="respondNo()">No</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <script>
+        function showGreeting() {
+            const nicknameInput = document.getElementById('nickname');
+            const nickname = nicknameInput.value.trim();
+
+            if (nickname === "") {
+                alert("กรุณาป้อนชื่อเล่นของคุณก่อนนะครับ/คะ");
+                return;
+            }
+
+            document.getElementById('name-input-page').style.display = 'none';
+            document.getElementById('greeting-page').style.display = 'block';
+
+            const greetingMessage = document.getElementById('greeting-message');
+            greetingMessage.innerHTML = `
+                สวัสดี${nickname} เราชื่อเฟม เรียนวิดวะปี 4 ครับ ยินดีที่ได้รู้จักนะ คือเค้าอยากรู้จัก${nickname}มากกว่านี้ คุยด้วยได้ไหมคั้บ? หรือว่าถ้ามีคนคุยอยู่แล้วก็ไม่เป็นไร แต่ยินดีที่ได้รู้จักนะคั้บ
+            `;
+        }
+
+        // Get the modal
+        const modal = document.getElementById("myModal");
+        // Get the <span> element that closes the modal
+        const span = document.getElementsByClassName("close-button")[0];
+        // Get the <p> element for modal text
+        const modalText = document.getElementById("modal-text");
+
+        function respondYes() {
+            modalText.innerText = "ตอบในเฟสว่า 'ได้!'";
+            modal.style.display = "flex"; // Use flex to center the modal content
+        }
+
+        function respondNo() {
+            modalText.innerText = "พิมพ์ในเฟสว่า 'ไม่!'";
+            modal.style.display = "flex"; // Use flex to center the modal content
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
